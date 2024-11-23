@@ -3,6 +3,7 @@
 //Blue squares represent the times i passed out on the couch, red ones are on the bed, white circles are the wheels of torture where i woke up and forced myself to work
 
 
+
 let font 
 let font2
 let hours = [9, 10, 11, 12, 1, 2, 3, 4];
@@ -12,12 +13,13 @@ function preload(){
   font = loadFont('Satoshi-Black.otf')
   font2 = loadFont('Satoshi-Light.otf')
   laptop = loadImage('laptop-1.png')
-  
 }
+
 function setup() {
-  createCanvas(600, 600);
+  // Create a square canvas that uses the smaller of window width or height
+  let size = min(windowWidth, windowHeight)
+  createCanvas(size, size);
   laptop.resize(40,40)
-  
 }
 
 function draw() {
@@ -26,24 +28,22 @@ function draw() {
   push()
   textFont(font)
   fill('black')
-  textSize(12)
+  textSize(12) // Keep original text size
   textAlign(CENTER)
-  text('S L E E P   I S   F O R   T H E   W E E K',300,580)
+  text('S L E E P   I S   F O R   T H E   W E E K', width/2, height-20)
   pop()
   
-  
   let linenum = 7
-  let spacing = height/(linenum + 1)
+  let spacing = (height-65)/(linenum + 1) // Adjusted to match original spacing
   for (let i = 1; i <= linenum; i++ ){
-    let y = i*spacing
+    let y = i*spacing + 40 // Added offset to match original position
     push()
       strokeWeight(1)
       stroke('white')
-      line(0,y,width,y)
-      line(0,y+10, width, y+10)
+      line(0, y, width, y)
+      line(0, y+10, width, y+10)
     pop()
-    // circle(0,y,5)
-    //rect(CENTER)
+    
     let circlenum = 8
     let rad = 3
     let squarefill = 'black'
@@ -56,20 +56,22 @@ function draw() {
       textAlign(CENTER)
       text(hours[j-1], x, 40)
       pop()
+      
       push()
       strokeWeight(0.5)
       stroke('rgb(175,172,172)')
-      line(x+1,75,x+1,535)
+      line(x+1, 75, x+1, height-65)
       pop()
+      
       push()
         noStroke()
         fill(squarefill)
         square(x,y,rad)
-        //image(laptop, x,y)
       
       if ((j == 4 && i == 1) || (j == 5 && i == 2) || (j == 5 && i ==3) || (j == 5 && i ==4) || (j == 2 && i == 5) || (j==7 && i == 6) || (j==3 && i == 7)) {
         rad = 10 
-        squarefill = 'red' }
+        squarefill = 'red' 
+      }
       pop()
       
       let distance = dist(mouseX, mouseY, x, y);
@@ -79,25 +81,30 @@ function draw() {
         circle(x, y, circleSize); 
       }
     
-     if ((j == 4 && i == 1) || (j == 5 && i == 2) || (j == 5 && i ==3) || (j == 5 && i ==4) || (j==3 && i == 7)) {
-        //image(laptop, x - laptop.width / 2, y - laptop.height / 2);
-       push()
-       noFill()
-       for (let k=0; k<20; k++){
-         let crad= k*5
-         stroke('white')
-         circle ( x+ 2, y+2, crad)}
-       pop()
+      if ((j == 4 && i == 1) || (j == 5 && i == 2) || (j == 5 && i ==3) || (j == 5 && i ==4) || (j==3 && i == 7)) {
+        push()
+        noFill()
+        for (let k=0; k<20; k++){
+          let crad = k*5
+          stroke('white')
+          circle(x+2, y+2, crad)
+        }
+        pop()
       } 
       
       if ((j == 2 && i == 1) ||(j == 3 && i == 1) || (j == 4 && i ==3)|| (j == 3 && i ==3) || (j == 2 && i ==4) || (j == 3 && i ==4) || (j == 4 && i ==4) || (j==1 && i == 7)|| (j==2 && i == 7)) {
         push()
         fill('blue')
-       square ( x, y, 10)
+        square(x, y, 10)
         pop()
       } 
     }   
   }
+}
+
+function windowResized() {
+  let size = min(windowWidth, windowHeight)
+  resizeCanvas(size, size);
 }
 
 function keyPressed() {
